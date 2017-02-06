@@ -24,12 +24,18 @@ public class FooReportController {
         try {
 
             JasperReport report = JasperCompileManager.compileReport(
-                    new ClassPathResource("reports/rpt_foo.jrxml")
+                    new ClassPathResource("reports/sample.jrxml")
                     .getInputStream());
 
-            JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(asList(
+            SimpleReport simpleReport = new SimpleReport();
+            simpleReport.setHeader(new SimpleHeader());
+            simpleReport.setFooter(new SimpleFooter());
+            simpleReport.setDetails(asList(
                     new SimpleDetail("MY", "foo"),
                     new SimpleDetail("AU", "bar")
+            ));
+            JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(asList(
+                    simpleReport
             ));
 
             JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), beanColDataSource);
